@@ -202,19 +202,23 @@ export class AvoInspector {
       if (AvoInspector.shouldLog) {
         console.log("Avo Inspector: session started sent successfully.");
       }
-      await this.avoNetworkCallsHandler.callInspectorWithBatchBody([
-        this.avoNetworkCallsHandler.bodyForEventSchemaCall(
-          seesionId,
-          eventName,
-          eventSchema,
-          eventId,
-          eventHash
-        ),
-      ]).catch((err) => {
+      try {
+        await this.avoNetworkCallsHandler.callInspectorWithBatchBody([
+          this.avoNetworkCallsHandler.bodyForEventSchemaCall(
+            seesionId,
+            eventName,
+            eventSchema,
+            eventId,
+            eventHash
+          )]);
+        if (AvoInspector.shouldLog) {
+          console.log("Avo Inspector: schema sent successfully.");
+        }
+      } catch (err) {
         if (AvoInspector.shouldLog) {
           console.log("Avo Inspector: schema sending failed: " + err + ".");
         }
-      });
+      }
     } catch (e) {
       console.error(
         "Avo Inspector: something went wrong. Please report to support@avo.app.",
